@@ -1,148 +1,95 @@
-#include <iostream>
-#include <queue>
 #include <vector>
-#include <climits>
+#include <iostream>
 #include <algorithm>
+#include <queue>
+#include <climits>
 using namespace std;
 
 struct edge
 {
-    int start, end, length;
-    edge(int a, int b, int length) : start(a), end(b), length(length) {}
-    bool operator<(edge const &other) const
+    int to, length;
+    edge(int to, int length) : to(to), length(length) {}
+};
+
+struct point
+{
+    int number, distance;
+    point(int number, int distance) : number(number), distance(distance) {}
+    bool operator<(const point &p) const
     {
-        return length > other.length;
+        return distance > p.distance;
     }
 };
 
-class unionFinder
+class Solution
 {
 private:
-    vector<int> pre;
-    vector<int> rank;
+    vector<vector<edge>> edges;
+    vector<int> dis, vis;
 
 public:
-    void initialize(int n);
-    int find(int x);
-    bool isSame(int x, int y);
-    bool join(int x, int y);
-};
-
-class Solution : public unionFinder
-{
-private:
-    vector<vector<int>> distances; //邻接表
-    vector<edge> points;           //储存答案的数组
-public:
-    void init(int n, int m);
-    int Kruskal();
-    void print();
+    void initialize(int n, int m);
+    vector<int> dijkstra(int x);
 };
 
 int main()
 {
-    int n = 0, m = 0;
-    cin >> n >> m;
+    int n = 0, x = 0, m = 0;
+    cin >> n >> m >> x;
     Solution solution;
-    solution.initialize(n);
-    solution.init(n, m);
-    cout << solution.Kruskal() << endl;
-    solution.print();
-}
-
-void unionFinder::initialize(int n)
-{
-    pre.resize(n + 1);
-    rank.resize(n + 1);
-    for (int i = 0; i < n; i++)
+    solution.initialize(n, m);
+    vector<int> A = solution.dijkstra(x);
+    for (int i = 1; i < A.size(); i++)
     {
-        pre[i] = i;
-        rank[i] = 1;
+        cout << A[i] << " ";
     }
+    cout << endl;
 }
-
-int unionFinder::find(int x)
+void Solution::initialize(int n, int m)
 {
-    if (pre[x] == x)
-        return x;
-    return pre[x] = find(pre[x]);
-}
-
-bool unionFinder::isSame(int x, int y)
-{
-    return find(x) == find(y);
-}
-
-bool unionFinder::join(int x, int y)
-{
-    x = find(x);
-    y = find(y);
-    if (x == y)
-        return false;
-    if (rank[x] > rank[y])
-    {
-        pre[y] = x;
-    }
-    else if (rank[x] < rank[y])
-    {
-        pre[x] = y;
-    }
-    else
-    {
-        pre[x] = y;
-        rank[y]++;
-    }
-    return true;
-}
-
-void Solution::init(int n, int m)
-{
-    distances.resize(n + 1, vector<int>(n + 1, -1));
+    edges.clear();
+    edges.resize(n + 1);
     int x = 0, y = 0, z = 0;
     for (int i = 0; i < m; i++)
     {
         cin >> x >> y >> z;
-        distances[x][y] = z;
-        distances[y][x] = z;
+        edges[x].push_back(edge(y, z));
+        edges[y].push_back(edge(x, z));
     }
     return;
 }
 
-int Solution::Kruskal()
+vector<int> Solution::dijkstra(int x)
 {
-    priority_queue<edge> que;
-    for (int i = 1; i < distances.size(); i++)
-    {
-        for (int j = i + 1; j < distances[i].size(); j++)
-        {
-            if (distances[i][j] != -1)
-            {
-                que.push(edge(i, j, distances[i][j]));
-            }
-        }
-    }
-    int count = 1, res = 0;
-    while (count < distances.size() && !que.empty())
+    dis.clear();
+    dis.resize(edges.size(), INT_MAX);
+    dis[x] = 0;
+    vis.clear();
+    vis.resize(edges.size(), 0);
+    priority_queue<point> que;
+    que.push(point(x, 0));
+    while (!que.empty())
     {
         auto it = que.top();
         que.pop();
-        int start_loc = it.start, end_loc = it.end, loc_val = it.length;
-        if (!isSame(start_loc, end_loc))
+        int val = it.number;
+        if (vis[val] == 1)
         {
-            join(start_loc, end_loc);
-            points.push_back(edge(start_loc, end_loc, loc_val));
-            res += loc_val;
-            count++;
+            continue;
+        }
+        vis[val] = 1;
+        for (int i = 0; i < edges[val].size(); i++)
+        {
+            int end = edges[val][i].to;
+            if (vis[end] == 0)
+            {
+                if (dis[end] > dis[val] + edges[val][i].length)
+                {
+                    dis[end] = edges[val][i].length + dis[val];
+                    que.push(point(end, dis[end]));
+                }
+            }
         }
     }
-    return res;
-}
-
-void Solution::print()
-{
-    for (int i = 0; i < points.size(); i++)
-    {
-        cout << points[i].start << " " << points[i].end << " " << points[i].length << endl;
-    }
-    return;
+    return dis;
 }
