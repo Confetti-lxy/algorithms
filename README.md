@@ -1,3 +1,3 @@
 # My-GitHub-Project
 
-read me
+It's just a test file.
