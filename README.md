@@ -1,11 +1,7 @@
 # My-GitHub-Project
 
-It's just a test file.
+It's just a file about some common useful algorithms.
 
-test1
 
-test2
-
-test3
 
 
