@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "Kruskal",
+        "lowbit",
         "maxflow",
         "sumflow"
     ]
