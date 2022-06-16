@@ -3,6 +3,8 @@
         "Kruskal",
         "lowbit",
         "maxflow",
-        "sumflow"
+        "pqrs",
+        "sumflow",
+        "wxyz"
     ]
 }
