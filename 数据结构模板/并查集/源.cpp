@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+
 using namespace std;
 
 class unionFinder
@@ -10,8 +11,11 @@ private:
 
 public:
     void initialize(int n);
+
     int find(int x);
+
     bool isSame(int x, int y);
+
     bool join(int x, int y);
 };
 
