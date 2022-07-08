@@ -5,8 +5,7 @@ using namespace std;
 
 struct edge
 {
-    int to, weight, pre;
-    // to是终点，weight是权值，pre是相同起点的上一个点的位置
+    int to, weight, pre; // to是终点，weight是权值，pre是相同起点的上一个点的位置
 
     edge() : to(0), weight(0), pre(-1) {}
 
@@ -66,15 +65,3 @@ void Chained_forward_star::read()
         cout << endl;
     }
 }
-
-/*
-一组可用的样例:
-5 7
-1 2 1
-2 3 2
-3 4 3
-1 3 4
-4 1 5
-1 5 6
-4 5 7
-*/
