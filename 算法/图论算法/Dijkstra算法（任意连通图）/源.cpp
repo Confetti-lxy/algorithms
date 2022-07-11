@@ -1,8 +1,5 @@
-#include <vector>
-#include <iostream>
-#include <algorithm>
-#include <queue>
-#include <climits>
+#include <bit/stdc++.h>
+
 using namespace std;
 
 struct edge
