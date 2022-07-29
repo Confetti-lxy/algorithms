@@ -1,35 +1,32 @@
 #include <vector>
 #include <algorithm>
+
 using namespace std;
 
 //给定一个数组 candidates 和一个目标数 target,找出 candidates 中所有可以使数字和为 target 的组合
 // candidates 中的每个数字在每个组合中只能使用一次
 
-class Solution
-{
+class Solution {
 private:
-    vector<vector<int>> result;
+    vector <vector<int>> result;
     vector<int> path;
+
     void backtracking(vector<int> &candidates, int target, int sum, int startIndex, vector<bool> &used);
 
 public:
-    vector<vector<int>> combinationSum2(vector<int> &candidates, int target);
+    vector <vector<int>> combinationSum2(vector<int> &candidates, int target);
 };
 
-void Solution::backtracking(vector<int> &candidates, int target, int sum, int startIndex, vector<bool> &used)
-{
-    if (sum == target)
-    {
+void Solution::backtracking(vector<int> &candidates, int target, int sum, int startIndex, vector<bool> &used) {
+    if (sum == target) {
         result.push_back(path);
         return;
     }
-    for (int i = startIndex; i < candidates.size() && sum + candidates[i] <= target; i++)
-    {
+    for (int i = startIndex; i < candidates.size() && sum + candidates[i] <= target; i++) {
         // used[i - 1] == true，说明同一树枝candidates[i - 1]使用过
         // used[i - 1] == false，说明同一树层candidates[i - 1]使用过
         // 要对同一树层使用过的元素进行跳过
-        if (i > 0 && candidates[i] == candidates[i - 1] && used[i - 1] == false)
-        {
+        if (i > 0 && candidates[i] == candidates[i - 1] && used[i - 1] == false) {
             continue;
         }
         sum += candidates[i];
@@ -42,8 +39,7 @@ void Solution::backtracking(vector<int> &candidates, int target, int sum, int st
     }
 }
 
-vector<vector<int>> Solution::combinationSum2(vector<int> &candidates, int target)
-{
+vector <vector<int>> Solution::combinationSum2(vector<int> &candidates, int target) {
     vector<bool> used(candidates.size(), false);
     path.clear();
     result.clear();

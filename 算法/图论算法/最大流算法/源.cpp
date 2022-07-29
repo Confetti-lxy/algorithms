@@ -1,23 +1,21 @@
-#include <string.h>
-#include <iostream>
-#include <queue>
-#include <climits>
+#include <bit/stdc++.h>
+
 using namespace std;
 
-class Solution
-{
+class Solution {
 private:
-    vector<vector<int>> distances;
+    vector <vector<int>> distances;
     vector<int> flow, pre;
+
     int BFS(int src, int des);
 
 public:
     void initialize(int n, int m);
+
     int maxflow(int src, int des);
 };
 
-int main()
-{
+int main() {
     int n = 0, m = 0;
     cin >> n >> m;
     int a, b;
@@ -30,22 +28,19 @@ int main()
     cout << ans << endl;
 }
 
-void Solution::initialize(int n, int m)
-{
+void Solution::initialize(int n, int m) {
     distances.clear();
     distances.resize(n + 1, vector<int>(n + 1, 0));
     flow.clear();
     flow.resize(n + 1, INT_MAX);
     int x = 0, y = 0, z = 0;
-    for (int i = 0; i < m; i++)
-    {
+    for (int i = 0; i < m; i++) {
         cin >> x >> y >> z;
         distances[x][y] = z;
     }
 }
 
-int Solution::BFS(int src, int des)
-{
+int Solution::BFS(int src, int des) {
     int n = distances.size();
     queue<int> que;
     pre.clear();
@@ -53,18 +48,14 @@ int Solution::BFS(int src, int des)
     pre[src] = 0;
     flow[src] = INT_MAX;
     que.push(src);
-    while (!que.empty())
-    {
+    while (!que.empty()) {
         auto index = que.front();
         que.pop();
-        if (index == des)
-        {
+        if (index == des) {
             break;
         }
-        for (int i = 1; i < n; i++)
-        {
-            if (i != src && distances[index][i] > 0 && pre[i] == -1)
-            {
+        for (int i = 1; i < n; i++) {
+            if (i != src && distances[index][i] > 0 && pre[i] == -1) {
                 pre[i] = index;
                 flow[i] = min(distances[index][i], flow[index]);
                 que.push(i);
@@ -74,16 +65,13 @@ int Solution::BFS(int src, int des)
     return (pre[des] == -1) ? -1 : flow[des];
 }
 
-int Solution::maxflow(int src, int des)
-{
+int Solution::maxflow(int src, int des) {
     int sumflow = 0;
     int increasement = BFS(src, des);
     cout << increasement << " ";
-    while (increasement != -1)
-    {
+    while (increasement != -1) {
         int k = des;
-        while (k != src)
-        {
+        while (k != src) {
             int last = pre[k];
             distances[last][k] -= increasement;
             distances[k][last] += increasement;
